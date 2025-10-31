@@ -14,19 +14,17 @@ jobs:
       - name: Jira Login
         uses: atlassian/gajira-login@v3
         env:
-          JIRA_BASE_URL: $
-          JIRA_USER_EMAIL: $
-          JIRA_API_TOKEN: $
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+
       # Creates a new Jira ticket for the package
       - name: Create new Jira ticket
         uses: atlassian/gajira-create@v3
         with:
           project: TEST
           issuetype: Task
-          summary: Update package documentation for \
-          ${{ github.event.registry_package.name }} \
-          ${{ github.event.registry_package.package_version }}
-          description: A new version, \
-          ${{ github.event.registry_package.package_version }} \
-          was released and the documentation needs to be updated for the \
-          new package.
+          summary: "Update package documentation for ${{ github.event.registry_package.name }} ${{ github.event.registry_package.package_version }}"
+          description: |
+            A new version ${{ github.event.registry_package.package_version }} was released, 
+            and the documentation needs to be updated for the new package.
