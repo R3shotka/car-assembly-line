@@ -1,0 +1,60 @@
+name: Car Assembly Line
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Stage - Assemble Car
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create build directory
+        run: mkdir build
+
+      - name: Create car.txt file
+        run: |
+          cd build
+          echo "Кузов" > car.txt
+          echo "Двигун" >> car.txt
+          echo "Колеса" >> car.txt
+          echo "Двері" >> car.txt
+          echo "Фари" >> car.txt
+          echo "Капот" >> car.txt
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: car-artifacts
+          path: build/
+
+  test:
+    name: Test Stage - Verify Parts
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: car-artifacts
+          path: build/
+
+      - name: Verify Car Parts
+        run: |
+          cd build
+          echo "🔍 Перевірка деталей..."
+          grep "Кузов" car.txt
+          grep "Двигун" car.txt
+          grep "Колеса" car.txt
+          grep "Двері" car.txt
+          grep "Фари" car.txt
+          grep "Капот" car.txt
+          echo "✅ Всі деталі знайдено!"
