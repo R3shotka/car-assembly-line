@@ -8,27 +8,8 @@ jobs:
     if: ${{ contains(github.ref, 'refs/tags/') }}
     runs-on: ubuntu-latest
     steps:
-      - name: Send email
-        uses: dawidd6/action-send-mail@v3.8.0
-        with:
-          server_address: ${{ secrets.SERVER_ADDRESS }}
-          server_port: ${{ secrets.SERVER_PORT }}
-          username: ${{ secrets.MAIL_USERNAME }}
-          password: ${{ secrets.MAIL_PASSWORD }}
-          subject: New Tag Created
-          to: ${{ vars.EMAIL_RECIPIENTS }}
-          from: ${{ vars.EMAIL_SENDER }}
-          body: |
-            Hi there,
-
-            This is just to let you know that a new tag called \
-            ${{ github.ref_name }} in the \ 
-            [${{ github.repository }}] \ 
-            (https://github.com/${{ github.repository }}) repository.
-
-            That's all for now!
-
-            Kind regards,
-            Cat
-          convert_markdown: true
-
+      - name: Simulate sending email
+        run: |
+          echo "📧 Simulated sending email for tag: ${{ github.ref_name }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "URL: https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}"
