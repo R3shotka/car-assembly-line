@@ -1,0 +1,10 @@
+name: Workflow Call Demo - Caller
+
+on:
+  workflow_dispatch:  # запуск вручну
+
+jobs:
+  call_other_workflow:
+    uses: ./.github/workflows/workflow_call_demo.yml
+    with:
+      message: "Hello from the Caller workflow 👋"
