@@ -1,0 +1,17 @@
+name: Show Info on Pull Request Review
+
+on:
+  pull_request_review:
+    types: [submitted, dismissed]
+
+jobs:
+  show_review_info:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display review info
+        run: |
+          echo "🧩 Pull Request: ${{ github.event.pull_request.title }}"
+          echo "🧑 Reviewer: ${{ github.event.review.user.login }}"
+          echo "🗨️ Review State: ${{ github.event.review.state }}"
+          echo "💬 Review Body: ${{ github.event.review.body }}"
+          echo "🔗 PR URL: ${{ github.event.pull_request.html_url }}"
