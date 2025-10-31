@@ -1,0 +1,17 @@
+name: Notify on New Release
+
+on:
+  release:
+    types: [published, edited, deleted]
+
+jobs:
+  notify_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Release Info
+        run: |
+          echo "🚀 Release event triggered!"
+          echo "🆕 Release Name: ${{ github.event.release.name }}"
+          echo "🏷️ Tag: ${{ github.event.release.tag_name }}"
+          echo "👤 Author: ${{ github.event.release.author.login }}"
+          echo "🔗 URL: ${{ github.event.release.html_url }}"
