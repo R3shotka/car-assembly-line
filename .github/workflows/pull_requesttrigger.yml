@@ -1,0 +1,30 @@
+name: Notify on Pull Request
+
+on:
+  # Спрацьовує при створенні або запиті на ревʼю PR
+  pull_request:
+    types: [opened, review_requested]
+
+jobs:
+  notify_opened:
+    if: ${{ github.event.action == 'opened' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify PR opened
+        run: |
+          echo "🟢 Новий Pull Request відкрито!"
+          echo "Автор: ${{ github.event.pull_request.user.login }}"
+          echo "Назва: ${{ github.event.pull_request.title }}"
+          echo "URL: ${{ github.event.pull_request.html_url }}"
+
+  notify_review_requested:
+    if: ${{ github.event.action == 'review_requested' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify review requested
+        run: |
+          echo "🟡 Запит на ревʼю Pull Request!"
+          echo "Автор PR: ${{ github.event.pull_request.user.login }}"
+          echo "Ревʼюер: ${{ github.event.requested_reviewer.login }}"
+          echo "Назва PR: ${{ github.event.pull_request.title }}"
+          echo "URL: ${{ github.event.pull_request.html_url }}"
