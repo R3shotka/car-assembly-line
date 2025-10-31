@@ -1,1 +1,24 @@
+name: Notify Slack of Pull Request Review
 
+on:
+  # Will trigger the workflow when a review is submitted for 
+  # the pull request
+  pull_request_review: 
+    types: submitted
+
+jobs:
+  send_review_submitted_notification:
+    runs-on: ubuntu-latest
+    steps:
+      # Sends a Slack message to a channel
+      - name: Send Slack Message
+        uses: archive/github-actions-slack@v2.7.0
+        with:
+          slack-bot-user-oauth-access-token: \
+          ${{ secrets.SLACK_BOT_USER_ACCESS_TOKEN }}
+          slack-channel: ${{ vars.SLACK_CHANNEL }}
+          slack-text: |
+            ${{ github.event.review.user.login }} has submitted a review \
+            for ${{ github.event.pull_request.user.login }}'s pull request \
+            titled: "${{ github.event.pull_request.title }}". You can view \
+            the pull request [here](${{ github.event.pull_request.url }}).
