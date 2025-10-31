@@ -1,1 +1,68 @@
+name: Create Jira Ticket Workflow
+
+on:
+  # 🔹 Можна викликати вручну (через кнопку "Run workflow" у GitHub → Actions)
+  workflow_dispatch:
+    inputs:
+      issuetype:
+        description: Issue Type
+        required: true
+        default: 'Task'
+        type: choice
+        options:
+          - Task
+          - Bug
+      summary:
+        description: Summary
+        type: string
+        required: true
+      description:
+        description: Description
+        type: string
+        required: false
+        default: 'No description'
+
+  # 🔹 Може бути викликаний іншим workflow
+  workflow_call:
+    inputs:
+      issuetype:
+        description: Issue Type
+        type: string
+        required: true
+      summary:
+        description: Summary
+        type: string
+        required: true
+      description:
+        description: Description
+        type: string
+        required: false
+        default: 'No description'
+    secrets:
+      JIRA_BASE_URL:
+        required: true
+      JIRA_USER_EMAIL:
+        required: true
+      JIRA_API_TOKEN:
+        required: true
+
+jobs:
+  create_jira_ticket:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Jira Login
+        uses: atlassian/gajira-login@v3
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+
+      - name: Create Jira Ticket
+        id: create_jira_ticket
+        uses: atlassian/gajira-create@v3
+        with:
+          project: TEST
+          issuetype: ${{ inputs.issuetype }}
+          summary: ${{ inputs.summary }}
+          description: ${{ inputs.description }}
 
