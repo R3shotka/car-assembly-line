@@ -1,0 +1,16 @@
+name: Log Deployment Event
+
+on:
+  deployment:
+
+jobs:
+  log_deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show Deployment Info
+        run: |
+          echo "🚀 New deployment triggered!"
+          echo "🆔 Deployment ID: ${{ github.event.deployment.id }}"
+          echo "👤 Triggered by: ${{ github.actor }}"
+          echo "🌍 Environment: ${{ github.event.deployment.environment }}"
+          echo "🔗 Repo: ${{ github.repository }}"
