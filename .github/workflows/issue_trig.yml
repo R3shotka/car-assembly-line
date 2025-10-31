@@ -1,0 +1,16 @@
+name: Show Message on Issue Event
+
+on:
+  issues:
+    types: [opened, closed, reopened]
+
+jobs:
+  log_issue_event:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show event info
+        run: |
+          echo "🐞 Issue title: ${{ github.event.issue.title }}"
+          echo "🧑 Action: ${{ github.event.action }}"
+          echo "📂 URL: ${{ github.event.issue.html_url }}"
+          echo "👤 Author: ${{ github.actor }}"
