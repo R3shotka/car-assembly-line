@@ -1,0 +1,17 @@
+name: Log Deployment Status
+
+on:
+  deployment_status:
+
+jobs:
+  log_status:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show Deployment Status
+        run: |
+          echo "📦 Deployment status updated!"
+          echo "🆔 Deployment ID: ${{ github.event.deployment.id }}"
+          echo "📊 Status: ${{ github.event.deployment_status.state }}"
+          echo "💬 Description: ${{ github.event.deployment_status.description }}"
+          echo "🌍 Environment: ${{ github.event.deployment.environment }}"
+          echo "👤 Updated by: ${{ github.actor }}"
