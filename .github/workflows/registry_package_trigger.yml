@@ -1,1 +1,32 @@
+name: Create Jira Ticket for New Package Release
 
+on:
+  # Will trigger the workflow when a package is published or updated 
+  # in the GitHub Registry
+  registry_package: 
+    types: [published, updated]
+
+jobs:
+  create_jira_ticket:
+    runs-on: ubuntu-latest
+    steps:
+      # Logs into Jira
+      - name: Jira Login
+        uses: atlassian/gajira-login@v3
+        env:
+          JIRA_BASE_URL: $
+          JIRA_USER_EMAIL: $
+          JIRA_API_TOKEN: $
+      # Creates a new Jira ticket for the package
+      - name: Create new Jira ticket
+        uses: atlassian/gajira-create@v3
+        with:
+          project: TEST
+          issuetype: Task
+          summary: Update package documentation for \
+          ${{ github.event.registry_package.name }} \
+          ${{ github.event.registry_package.package_version }}
+          description: A new version, \
+          ${{ github.event.registry_package.package_version }} \
+          was released and the documentation needs to be updated for the \
+          new package.
