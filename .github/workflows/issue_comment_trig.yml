@@ -1,0 +1,16 @@
+name: Show Message on Issue Comment
+
+on:
+  issue_comment:
+    types: [created, edited]
+
+jobs:
+  show_comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Display comment info
+        run: |
+          echo "💬 Comment: ${{ github.event.comment.body }}"
+          echo "🧑 Commented by: ${{ github.actor }}"
+          echo "🪪 Issue title: ${{ github.event.issue.title }}"
+          echo "🔗 URL: ${{ github.event.comment.html_url }}"
