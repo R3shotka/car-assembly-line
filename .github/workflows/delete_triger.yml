@@ -1,0 +1,32 @@
+name: Add Jira Comment on Branch Deletion
+
+on:
+  delete:
+
+jobs:
+  add_comment:
+    if: github.event.ref_type == 'branch'
+    runs-on: ubuntu-latest
+    steps:
+      # 1️⃣ Авторизація в Jira
+      - name: Jira Login
+        uses: atlassian/gajira-login@v3
+        env:
+          JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
+          JIRA_USER_EMAIL: ${{ secrets.JIRA_USER_EMAIL }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+
+      # 2️⃣ Знаходження Jira-ключа в імені гілки
+      - name: Find Jira Key in Branch Name
+        id: find_issue_key
+        uses: atlassian/gajira-find-issue-key@v3
+        with:
+          from: branch
+
+      # 3️⃣ Додавання коментаря в знайдений Jira-тік
+      - name: Comment on issue
+        uses: atlassian/gajira-comment@v3
+        with:
+          issue: ${{ steps.find_issue_key.outputs.issue }}
+          comment: |
+            🗑️ The branch **${{ github.event.ref }}** was deleted in GitHub.
