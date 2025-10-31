@@ -1,0 +1,18 @@
+name: Workflow Call Demo - Callee
+
+on:
+  workflow_call:
+    inputs:
+      message:
+        description: "Message from the caller"
+        required: true
+        type: string
+
+jobs:
+  show_message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print message from caller
+        run: |
+          echo "🟢 This is the called workflow!"
+          echo "💬 Message received: ${{ inputs.message }}"
