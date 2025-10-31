@@ -1,30 +1,17 @@
-name: Notify on Pull Request
+name: Test Pull Request Trigger
 
 on:
-  # Спрацьовує при створенні або запиті на ревʼю PR
   pull_request:
-    types: [opened, review_requested]
+    types: [opened, reopened, synchronize]
 
 jobs:
-  notify_opened:
-    if: ${{ github.event.action == 'opened' }}
+  test_pr_trigger:
     runs-on: ubuntu-latest
     steps:
-      - name: Notify PR opened
+      - name: Show PR Info
         run: |
-          echo "🟢 Новий Pull Request відкрито!"
-          echo "Автор: ${{ github.event.pull_request.user.login }}"
-          echo "Назва: ${{ github.event.pull_request.title }}"
-          echo "URL: ${{ github.event.pull_request.html_url }}"
-
-  notify_review_requested:
-    if: ${{ github.event.action == 'review_requested' }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Notify review requested
-        run: |
-          echo "🟡 Запит на ревʼю Pull Request!"
-          echo "Автор PR: ${{ github.event.pull_request.user.login }}"
-          echo "Ревʼюер: ${{ github.event.requested_reviewer.login }}"
-          echo "Назва PR: ${{ github.event.pull_request.title }}"
-          echo "URL: ${{ github.event.pull_request.html_url }}"
+          echo "🎉 Pull Request Triggered!"
+          echo "🧑 Автор: ${{ github.actor }}"
+          echo "📄 Назва PR: ${{ github.event.pull_request.title }}"
+          echo "🔗 Посилання: ${{ github.event.pull_request.html_url }}"
+          echo "⚙️ Тип події: ${{ github.event.action }}"
