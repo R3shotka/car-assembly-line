@@ -1,1 +1,34 @@
+name: Send Email on Page Build
 
+on:
+  # Will trigger the workflow when a new GitHub Pages build occurs
+  page_build: 
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+    steps:
+      # Sends an email using SMTP
+      - name: Send email
+        uses: dawidd6/action-send-mail@v3.8.0
+        with:
+          server_address: $
+          server_port: $
+          username: $
+          password: $
+          subject: GitHub Pages Build Executed with Status of \
+          ${{ github.event.build.status }}
+          to: ${{ vars.EMAIL_RECIPIENTS }}
+          from: ${{ vars.EMAIL_SENDER }}
+          body: |
+            Hey,
+
+            Just thought to let you know that a GitHub Pages build ran on \
+            the $ repository. The build executed with \
+            the following result: $.
+
+            Please navigate to GitHub to see more.
+
+            All the best,
+            Cat
+          convert_markdown: true
